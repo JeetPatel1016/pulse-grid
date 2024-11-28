@@ -1,50 +1,87 @@
-# React + TypeScript + Vite
+# 🎵 **BeatCraft**
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+_A modern step sequencer app built with React and Tone.js._
 
-Currently, two official plugins are available:
+## 🚀 **Overview**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+BeatCraft is an intuitive step sequencer application that lets users create rhythmic patterns using sample-based tracks. With a grid interface, tempo control, and a responsive design, this app makes beat-making accessible and fun for music enthusiasts and professionals alike.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## 🌟 **Features**
 
-- Configure the top-level `parserOptions` property like this:
+- **Step Sequencing**: Toggle steps on a grid to create beats.
+- **Multi-Track Support**: Add multiple tracks with custom audio samples.
+- **Real-Time Playback**: Play and pause your sequence in real time.
+- **Adjustable Tempo**: Fine-tune the BPM for your rhythm.
+- **Interactive Mixer**: Adjust track volumes dynamically.
+- **Visual Indicators**: Lamps highlight the active steps during playback.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+---
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## 🛠️ **Technologies Used**
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+- **Frontend**:
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+  - [React](https://reactjs.org/) – UI development.
+  - [React Icons](https://react-icons.github.io/react-icons/) – Play, pause, and mixer icons.
+
+- **Audio Engine**:
+
+  - [Tone.js](https://tonejs.github.io/) – Sequencing and audio synthesis.
+
+- **Styling**:
+  - [TailwindCSS](https://tailwindcss.com/) – Custom styles for the grid and components.
+
+---
+
+## 📦 **Getting Started**
+
+### Prerequisites
+
+Ensure you have the following installed:
+
+- [Node.js](https://nodejs.org/) (v16+)
+- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
+
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/your-username/beatcraft.git
+   cd beatcraft
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+3. Start the development server:
+
+   ```bash
+   npm start
+   # or
+   yarn start
+   ```
+
+4. Open the app in your browser:
+   ```
+   http://localhost:5173/
+   ```
+
+---
+
+## 🤝 **Contributing**
+
+Contributions are welcome! To get started:
+
+1. Fork the project.
+2. Create a feature branch (`git checkout -b feature-name`).
+3. Commit your changes (`git commit -m "Add new feature"`).
+4. Push to the branch (`git push origin feature-name`).
+5. Open a pull request.
