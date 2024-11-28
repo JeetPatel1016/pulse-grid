@@ -1,0 +1,74 @@
+.app {
+  @apply flex gap-4;
+}
+
+.row {
+  @apply flex gap-x-2;
+}
+.row > *:nth-child(4n):not(:last-child) {
+  @apply mr-2;
+}
+
+.lamp {
+  @apply h-2 w-8 mt-4 rounded-sm bg-slate-700;
+}
+
+.lamp.active {
+  @apply bg-lime-500/90 border border-lime-400 shadow-md shadow-lime-400/75;
+}
+
+.cellList {
+  @apply flex flex-col gap-y-4;
+}
+
+.cell {
+  @apply cursor-pointer;
+}
+.cell_input {
+  @apply hidden border-0 h-[1px] w-[1px] -m-[1px] p-0 overflow-hidden whitespace-nowrap absolute outline-none;
+}
+.cell_input:checked + .cell_content {
+  @apply bg-teal-500  border-teal-400 shadow-glow-1;
+}
+.cell_input:focus-visible + .cell_content {
+  @apply outline outline-2  outline-offset-2;
+}
+.cell_content {
+  @apply w-8 h-8 border-2 border-transparent bg-slate-700 outline-teal-600 rounded-sm transition-all;
+}
+
+.controls {
+  @apply flex gap-x-4 mt-12 justify-center;
+}
+
+.play {
+  @apply bg-green-700 hover:bg-green-600/85 p-2.5 rounded transition-colors;
+}
+.mixer {
+  @apply bg-slate-700 hover:bg-slate-600/85 p-2.5 rounded transition-colors;
+}
+
+.tempo {
+  @apply bg-slate-700 flex items-center justify-center select-none cursor-n-resize rounded shadow-inner shadow-slate-800 w-16 px-2 h-full text-xl;
+}
+
+.slider {
+  @apply appearance-none bg-transparent cursor-pointer w-32;
+}
+
+.slider::-webkit-slider-runnable-track {
+  @apply rounded-full bg-slate-800 h-2;
+}
+.slider::-moz-range-track {
+  background: white;
+  height: 0.5rem;
+}
+
+/***** Thumb Styles *****/
+.slider::-webkit-slider-thumb {
+  @apply appearance-none -mt-1 bg-teal-400 h-4 w-4 rounded-full border-none;
+}
+
+.seperater-vertical {
+  @apply bg-slate-800 min-h-[5px] w-[1px];
+}
