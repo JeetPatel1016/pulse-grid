@@ -1,11 +1,7 @@
-import React from "react";
+import { useTone } from "../context/ToneContext";
 
-type LampRowProps = {
-  numOfSteps: number;
-  lampsRef: React.MutableRefObject<HTMLDivElement[]>;
-};
-
-export default function LampRow({ numOfSteps, lampsRef }: LampRowProps) {
+export default function LampRow() {
+  const { numOfSteps, lampsRef } = useTone();
   const stepIds = [...Array(numOfSteps).keys()] as const;
 
   return (

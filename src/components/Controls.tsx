@@ -1,30 +1,29 @@
 import { FaPause, FaPlay } from "react-icons/fa6";
 import { RxMixerHorizontal } from "react-icons/rx";
 import Tempo from "./Tempo";
+import { useTone } from "../context/ToneContext";
 
 type ControlsProps = {
-  isPlaying: boolean;
-  onPlayPauseClick: () => void;
-  tempo: number;
-  onTempoChange: (tempo: number) => void;
   isMixerOpen: boolean;
   toggleMixer: () => void;
 };
 
-export default function Controls({
-  isPlaying,
-  onPlayPauseClick,
-  tempo,
-  onTempoChange,
-  isMixerOpen,
-  toggleMixer,
-}: ControlsProps) {
+export default function Controls({ isMixerOpen, toggleMixer }: ControlsProps) {
+  const { isPlaying, play, stop, transport } = useTone();
+
+  const handlePlayPauseClick = () => {
+    if (transport.state === "started") {
+      stop();
+    } else {
+      play();
+    }
+  };
   return (
     <div className="controls">
-      <button className="mr-4 play" onClick={onPlayPauseClick}>
+      <button className="mr-4 play" onClick={handlePlayPauseClick}>
         {isPlaying ? <FaPause /> : <FaPlay />}
       </button>
-      <Tempo tempo={tempo} setTempo={onTempoChange} />
+      <Tempo />
       <div className="seperater-vertical"></div>
       <button
         onClick={toggleMixer}

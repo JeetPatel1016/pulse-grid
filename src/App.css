@@ -49,7 +49,12 @@
 }
 
 .tempo {
-  @apply bg-slate-700 flex items-center justify-center select-none cursor-n-resize rounded shadow-inner shadow-slate-800 w-16 px-2 h-full text-xl;
+  -moz-appearance: textfield;
+  @apply transition-colors border-2 border-transparent outline-none focus-visible:border-teal-300 bg-slate-700 text-center rounded w-16 px-2 h-full text-xl;
+}
+.tempo::-webkit-inner-spin-button,
+.tempo::-webkit-outer-spin-button {
+  @apply appearance-none m-0;
 }
 
 .slider {
