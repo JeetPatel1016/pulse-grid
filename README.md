@@ -1,10 +1,10 @@
-# 🎵 **BeatCraft**
+# 🎵 **PulseGrid**
 
 _A modern step sequencer app built with React and Tone.js._
 
 ## 🚀 **Overview**
 
-BeatCraft is an intuitive step sequencer application that lets users create rhythmic patterns using sample-based tracks. With a grid interface, tempo control, and a responsive design, this app makes beat-making accessible and fun for music enthusiasts and professionals alike.
+PulseGrid is an intuitive step sequencer application that lets users create rhythmic patterns using sample-based tracks. With a grid interface, tempo control, and a responsive design, this app makes beat-making accessible and fun for music enthusiasts and professionals alike.
 
 ---
 
@@ -44,34 +44,23 @@ Ensure you have the following installed:
 - [Node.js](https://nodejs.org/) (v16+)
 - [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
 
-### Installation
+### Running locally
 
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/your-username/beatcraft.git
-   cd beatcraft
-   ```
-
-2. Install dependencies:
+1. Install dependencies:
 
    ```bash
    npm install
-   # or
-   yarn install
    ```
 
-3. Start the development server:
+2. Start the development server:
 
    ```bash
-   npm start
-   # or
-   yarn start
+   npm run dev
    ```
 
-4. Open the app in your browser:
+3. Open the app in your browser:
    ```
-   http://localhost:5173/
+   http://localhost:5173
    ```
 
 ---
