@@ -62,16 +62,15 @@
 }
 
 .slider::-webkit-slider-runnable-track {
-  @apply rounded-full bg-slate-800 h-2;
+  @apply rounded-full h-2;
 }
 .slider::-moz-range-track {
-  background: white;
-  height: 0.5rem;
+  @apply bg-transparent h-2;
 }
 
 /***** Thumb Styles *****/
 .slider::-webkit-slider-thumb {
-  @apply appearance-none -mt-1 bg-teal-400 h-4 w-4 rounded-full border-none;
+  @apply appearance-none bg-teal-100/75 hover:bg-teal-100 transition-colors h-2 w-5 rounded-full  border-none;
 }
 
 .seperater-vertical {

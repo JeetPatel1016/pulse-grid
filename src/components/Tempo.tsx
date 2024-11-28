@@ -15,7 +15,6 @@ export default function Tempo() {
       <input
         type="number"
         className="tempo"
-        defaultValue={bpm}
         value={bpm}
         onChange={handleBPMChange}
       />
