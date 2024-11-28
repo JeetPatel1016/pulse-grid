@@ -1,31 +1,20 @@
 import LampRow from "./LampRow";
-import useToneSequencer from "../hooks/useToneSequencer";
-import { Sample } from "../types";
+import { useTone } from "../context/ToneContext";
 
-type TrackGridProps = {
-  samples: Sample[];
-  numOfSteps: number;
-};
-
-export default function TrackGrid({
-  samples,
-  numOfSteps,
-}: TrackGridProps) {
-  const trackIds = [...Array(samples.length).keys()] as const;
+export default function TrackGrid() {
+  const { samples, stepsRef, numOfSteps } = useTone();
   const stepIds = [...Array(numOfSteps).keys()] as const;
-
-  const {lampsRef, stepsRef} = useToneSequencer(samples, numOfSteps)
 
   return (
     <>
       <div className="grid">
-        {samples.map((sample, index) => (
-          <p key={index}>{sample.name}</p>
+        {samples.map((sample, trackId) => (
+          <p key={trackId}>{sample.name}</p>
         ))}
       </div>
       <div className="grid">
         <div className="cellList">
-          {trackIds.map((trackId) => (
+          {samples.map((_, trackId) => (
             <div key={trackId} className="row">
               {stepIds.map((stepId) => {
                 const ids = `${trackId}-${stepId}`;
@@ -50,7 +39,7 @@ export default function TrackGrid({
             </div>
           ))}
         </div>
-        <LampRow numOfSteps={numOfSteps} lampsRef={lampsRef} />
+        <LampRow />
       </div>
     </>
   );
