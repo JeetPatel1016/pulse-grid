@@ -1,11 +1,17 @@
+import { ChangeEventHandler } from "react";
 import { useTone } from "../context/ToneContext";
 
 export default function Mixer() {
-  const { tracksRef, levels, volumes, updateVolume } = useTone();
+  const { tracksRef, levels, volumes, updateVolume, muteTrack } = useTone();
+  const handleMute: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const target = e.currentTarget;
+    const { value: trackId, checked } = target;
+    muteTrack(Number(trackId), checked);
+  };
   return (
     <div className="flex flex-col gap-y-4 overflow-hidden">
       {[...Array(tracksRef.current.length).keys()].map((id) => (
-        <div className="h-8 py-3">
+        <div key={`track-${id}`} className="h-8 overflow-hidden">
           <div className="relative w-32 h-2 bg-slate-800 rounded-full overflow-hidden">
             <div
               className=" bg-green-500 shadow-glow-2 h-full"
@@ -25,6 +31,21 @@ export default function Mixer() {
               step={0.01}
               className="top-0 absolute slider"
             />
+          </div>
+          <div className="flex gap-2 mt-2">
+            <label className="mixer_btn">
+              <input
+                value={tracksRef.current[id].id}
+                className="mixer_btn_input"
+                type="checkbox"
+                onChange={handleMute}
+              />
+              <span className="mixer_btn_content mute">M</span>
+            </label>
+            <label className="mixer_btn">
+              <input className="mixer_btn_input" type="checkbox" />
+              <span className="mixer_btn_content solo">S</span>
+            </label>
           </div>
         </div>
       ))}

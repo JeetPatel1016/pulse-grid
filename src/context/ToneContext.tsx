@@ -18,6 +18,7 @@ type ToneContextType = {
   tracksRef: React.MutableRefObject<Track[]>;
   play: () => void;
   stop: () => void;
+  muteTrack: (trackId: number, toggle: boolean) => void;
   setBPM: (newBPM: number) => void;
 };
 
@@ -84,6 +85,9 @@ export default function ToneProvider({
     );
   };
 
+  const muteTrack = (trackId: number, toggle: boolean) => {
+    tracksRef.current[trackId].isMuted = toggle;
+  };
   useEffect(() => {
     // Initialize Tone.js Samplers and Sequence
     tracksRef.current = samples.map((sample, i) => {
@@ -98,13 +102,13 @@ export default function ToneProvider({
       })
         .connect(meter)
         .toDestination();
-      return { id, meter, sampler };
+      return { id, meter, sampler, isMuted: false, isSolo: false };
     });
 
     seqRef.current = new Tone.Sequence(
       (time, step) => {
         tracksRef.current.forEach((track) => {
-          if (stepsRef.current[track.id]?.[step]?.checked) {
+          if (stepsRef.current[track.id]?.[step]?.checked && !track.isMuted) {
             track.sampler.triggerAttack(note, time);
           }
         });
@@ -164,6 +168,7 @@ export default function ToneProvider({
         setBPM,
         play,
         stop,
+        muteTrack,
         lampsRef,
         stepsRef,
         tracksRef,

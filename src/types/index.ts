@@ -9,6 +9,8 @@ export type Track = {
   id: number;
   sampler: Sampler;
   meter: Meter;
+  isMuted: boolean;
+  isSolo: boolean;
 };
 
 export type Level = {
