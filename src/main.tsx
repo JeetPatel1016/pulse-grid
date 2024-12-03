@@ -2,27 +2,8 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
-import { Sample } from "./types";
 import ToneProvider from "./context/ToneContext.tsx";
-
-const samples: Sample[] = [
-  {
-    url: "/kick.wav",
-    name: "KD",
-  },
-  {
-    url: "/snare.wav",
-    name: "SD",
-  },
-  {
-    url: "/hat-closed.wav",
-    name: "CH",
-  },
-  {
-    url: "/hat-open.wav",
-    name: "OH",
-  },
-];
+import { samples } from "./utils/samples.ts";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
