@@ -10,18 +10,18 @@ export function buildAssetPublicURL(url: string) {
 export const samples: Sample[] = [
   {
     url: buildAssetPublicURL("kick.wav"),
-    name: "KD",
+    name: "Kick",
   },
   {
     url: buildAssetPublicURL("snare.wav"),
-    name: "SD",
+    name: "Snare",
   },
   {
     url: buildAssetPublicURL("hat-closed.wav"),
-    name: "CH",
+    name: "Closed Hat",
   },
   {
     url: buildAssetPublicURL("hat-open.wav"),
-    name: "OH",
+    name: "Open Hat",
   },
 ];

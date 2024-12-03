@@ -9,10 +9,12 @@ export default function TrackGrid() {
     <>
       <div className="grid">
         {samples.map((sample, trackId) => (
-          <p key={trackId}>{sample.name}</p>
+          <p key={trackId} className="text-right">
+            {sample.name}
+          </p>
         ))}
       </div>
-      <div className="grid">
+      <div id="tracks" className="grid">
         <div className="cellList">
           {samples.map((_, trackId) => (
             <div key={trackId} className="row">

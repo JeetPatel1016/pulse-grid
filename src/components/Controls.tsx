@@ -26,6 +26,7 @@ export default function Controls({ isMixerOpen, toggleMixer }: ControlsProps) {
       <Tempo />
       <div className="seperater-vertical"></div>
       <button
+        id={"mixer-btn"}
         onClick={toggleMixer}
         className={`mixer ${isMixerOpen ? "!bg-teal-500/90" : ""}`}
       >
