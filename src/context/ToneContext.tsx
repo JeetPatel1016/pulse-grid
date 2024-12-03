@@ -19,6 +19,7 @@ type ToneContextType = {
   play: () => void;
   stop: () => void;
   muteTrack: (trackId: number, toggle: boolean) => void;
+  soloTrack: (trackId: number, toggle: boolean) => void;
   setBPM: (newBPM: number) => void;
 };
 
@@ -86,8 +87,13 @@ export default function ToneProvider({
   };
 
   const muteTrack = (trackId: number, toggle: boolean) => {
+    tracksRef.current[trackId].isSolo = false;
     tracksRef.current[trackId].isMuted = toggle;
   };
+  const soloTrack = (trackId: number, toggle: boolean) => {
+    tracksRef.current[trackId].isMuted = false;
+    tracksRef.current[trackId].isSolo = toggle;
+};
   useEffect(() => {
     // Initialize Tone.js Samplers and Sequence
     tracksRef.current = samples.map((sample, i) => {
@@ -108,9 +114,17 @@ export default function ToneProvider({
     seqRef.current = new Tone.Sequence(
       (time, step) => {
         tracksRef.current.forEach((track) => {
-          if (stepsRef.current[track.id]?.[step]?.checked && !track.isMuted) {
-            track.sampler.triggerAttack(note, time);
+          let condition = false;
+          const isSoloMode = tracksRef.current.some((track) => track.isSolo);
+          if (isSoloMode) {
+            condition =
+              track.isSolo && stepsRef.current[track.id]?.[step]?.checked;
+          } else {
+            condition =
+              !track.isMuted && stepsRef.current[track.id]?.[step]?.checked;
           }
+
+          if (condition) track.sampler.triggerAttack(note, time);
         });
 
         // Update the step lamps
@@ -169,6 +183,7 @@ export default function ToneProvider({
         play,
         stop,
         muteTrack,
+        soloTrack,
         lampsRef,
         stepsRef,
         tracksRef,
