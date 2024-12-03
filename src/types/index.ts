@@ -1,4 +1,4 @@
-import { Sampler } from "tone";
+import { Meter, Sampler } from "tone";
 
 export type Sample = {
   name: string;
@@ -8,4 +8,16 @@ export type Sample = {
 export type Track = {
   id: number;
   sampler: Sampler;
+  meter: Meter;
+  isMuted: boolean;
+  isSolo: boolean;
+};
+
+export type Level = {
+  id: number;
+  level: number;
+};
+export type VolumeLevel = {
+  id: number;
+  volume: number;
 };

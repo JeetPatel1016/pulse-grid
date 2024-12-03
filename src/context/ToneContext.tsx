@@ -1,19 +1,25 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
-import { Sample, Track } from "../types";
+import { Level, Sample, Track, VolumeLevel } from "../types";
 import * as Tone from "tone";
 import { TransportClass } from "tone/build/esm/core/clock/Transport";
+import { DbToLinear, linearToDb } from "../utils/volume";
 
 type ToneContextType = {
   isPlaying: boolean;
   samples: Sample[];
   numOfSteps: number;
   bpm: number;
+  levels: Level[];
+  volumes: VolumeLevel[];
+  updateVolume: (trackId: number, linearValue: number) => void;
   transport: TransportClass;
   lampsRef: React.MutableRefObject<HTMLDivElement[]>;
   stepsRef: React.MutableRefObject<HTMLInputElement[][]>;
   tracksRef: React.MutableRefObject<Track[]>;
   play: () => void;
   stop: () => void;
+  muteTrack: (trackId: number, toggle: boolean) => void;
+  soloTrack: (trackId: number, toggle: boolean) => void;
   setBPM: (newBPM: number) => void;
 };
 
@@ -32,7 +38,8 @@ export default function ToneProvider({
 }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [bpm, setBpmState] = useState<number>(Tone.getTransport().bpm.value);
-
+  const [levels, setLevels] = useState<Level[]>([]);
+  const [volumes, setVolumes] = useState<VolumeLevel[]>([]);
   const lampsRef = useRef<HTMLDivElement[]>([]);
   const stepsRef = useRef<HTMLInputElement[][]>([[]]);
   const seqRef = useRef<Tone.Sequence | null>(null);
@@ -58,21 +65,66 @@ export default function ToneProvider({
     setBpmState(clampedBpm);
   };
 
+  const getLevels = () => {
+    return tracksRef.current.map((trk) => ({
+      level: trk.meter.getValue() as number,
+      id: trk.id,
+    }));
+  };
+
+  const updateVolume = (trackId: number, linearValue: number) => {
+    const track = tracksRef.current.find((t) => t.id === trackId);
+    if (track) {
+      const dbValue = linearToDb(linearValue);
+      track.sampler.volume.value = dbValue;
+    }
+    setVolumes(
+      tracksRef.current.map((trk, id) => ({
+        id,
+        volume: DbToLinear(trk.sampler.volume.value),
+      }))
+    );
+  };
+
+  const muteTrack = (trackId: number, toggle: boolean) => {
+    tracksRef.current[trackId].isSolo = false;
+    tracksRef.current[trackId].isMuted = toggle;
+  };
+  const soloTrack = (trackId: number, toggle: boolean) => {
+    tracksRef.current[trackId].isMuted = false;
+    tracksRef.current[trackId].isSolo = toggle;
+};
   useEffect(() => {
     // Initialize Tone.js Samplers and Sequence
-    tracksRef.current = samples.map((sample, i) => ({
-      id: i,
-      sampler: new Tone.Sampler({
+    tracksRef.current = samples.map((sample, i) => {
+      const id = i;
+      const meter = new Tone.Meter({
+        channelCount: 1,
+        normalRange: true,
+        smoothing: 0.95,
+      });
+      const sampler = new Tone.Sampler({
         urls: { [note]: sample.url },
-      }).toDestination(),
-    }));
+      })
+        .connect(meter)
+        .toDestination();
+      return { id, meter, sampler, isMuted: false, isSolo: false };
+    });
 
     seqRef.current = new Tone.Sequence(
       (time, step) => {
         tracksRef.current.forEach((track) => {
-          if (stepsRef.current[track.id]?.[step]?.checked) {
-            track.sampler.triggerAttack(note, time);
+          let condition = false;
+          const isSoloMode = tracksRef.current.some((track) => track.isSolo);
+          if (isSoloMode) {
+            condition =
+              track.isSolo && stepsRef.current[track.id]?.[step]?.checked;
+          } else {
+            condition =
+              !track.isMuted && stepsRef.current[track.id]?.[step]?.checked;
           }
+
+          if (condition) track.sampler.triggerAttack(note, time);
         });
 
         // Update the step lamps
@@ -85,12 +137,36 @@ export default function ToneProvider({
       "16n"
     ).start(0);
 
+    setVolumes(
+      tracksRef.current.map((trk, id) => ({
+        id,
+        volume: DbToLinear(trk.sampler.volume.value),
+      }))
+    );
+
     // Cleanup Tone.js resources on unmount
     return () => {
       seqRef.current?.dispose();
-      tracksRef.current.forEach((track) => track.sampler.dispose());
+      tracksRef.current.forEach((track) => {
+        track.sampler.dispose();
+        track.meter.dispose();
+      });
     };
   }, [samples, numOfSteps, note]);
+
+  useEffect(() => {
+    let animationId: number;
+
+    const updateLevels = () => {
+      setLevels(getLevels());
+      animationId = requestAnimationFrame(updateLevels);
+    };
+    updateLevels();
+
+    return () => {
+      cancelAnimationFrame(animationId);
+    };
+  }, []);
 
   return (
     <ToneContext.Provider
@@ -99,10 +175,15 @@ export default function ToneProvider({
         numOfSteps,
         isPlaying,
         bpm,
+        levels,
+        volumes,
+        updateVolume,
         transport: Tone.getTransport(),
         setBPM,
         play,
         stop,
+        muteTrack,
+        soloTrack,
         lampsRef,
         stepsRef,
         tracksRef,
